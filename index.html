@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="fr" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bonne Semence - Portail Officiel</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* Animation fluide pour les transitions de contenu */
+        @keyframes fadeInView {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeInView 0.4s ease-out forwards;
+        }
+
+        /* Personnalisation de la barre de défilement */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0f2e22;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #1b4332;
+            border-radius: 3px;
+        }
+        #durable{
+            font-weight: bold;
+            color: #000;
+        }
+         table, tr, td, input, :placeholder-shown{
+            font-weight: bold;
+            color: #000;
+        }
+    </style>
+</head>
+<body class="h-full bg-slate-100 flex flex-col overflow-x-hidden text-slate-800">
+
+    <!-- Menu Principal Vert Foncé -->
+    <header class="bg-[#1b4d3e] text-white shadow-xl sticky top-0 z-50 border-b border-[#143a2e]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo et Nom (Nord-Ouest / Haut-Gauche) -->
+                <div class="flex items-center space-x-3 cursor-pointer group" onclick="switchView('accueil')">
+                    <div class="relative w-12 h-12 rounded-full overflow-hidden border-2 border-emerald-400 shadow-md bg-[#143a2e] flex items-center justify-center transition-transform group-hover:scale-105">
+                        <img src="images/bonnesemence.jpg" alt="Logo Bonne Semence" class="w-full h-full object-cover"">
+                    </div>
+                    <span class="text-xl sm:text-2xl font-bold tracking-wide text-emerald-100 font-sans">Bonne Semence</span>
+                </div>
+
+                <!-- Zone de Recherche au Centre / Droite -->
+                <div class="hidden md:flex items-center flex-1 max-w-md mx-8">
+                    <div class="relative w-full">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-emerald-300">
+                            <i class="fa-solid fa-search"></i>
+                        </span>
+                        <input type="text" id="searchInput" placeholder="Rechercher un domaine, un contenu..." class="w-full pl-10 pr-4 py-2 bg-[#143a2e]/80 border border-emerald-700/60 rounded-full text-sm text-white placeholder-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all shadow-inner">
+                    </div>
+                </div>
+
+                <!-- Bouton Menu Burger Mobile -->
+                <div class="flex items-center md:hidden">
+                    <button id="mobileMenuBtn" class="text-emerald-200 hover:text-white focus:outline-none p-2 rounded-lg bg-[#143a2e]">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Liens de Navigation Principaux -->
+                <nav class="hidden md:flex items-center space-x-4 text-sm font-medium">
+                    <button onclick="switchView('accueil')" id="nav-accueil" class="nav-link text-emerald-200 hover:text-white transition-colors px-3 py-2 rounded-lg bg-[#143a2e]/60">Accueil</button>
+                    <button onclick="switchView('domaines_index')" id="nav-domaines" class="nav-link text-emerald-200 hover:text-white transition-colors px-3 py-2 rounded-lg">Domaines</button>
+                    <button onclick="switchView('contact')" id="nav-contact" class="nav-link text-emerald-200 hover:text-white transition-colors px-3 py-2 rounded-lg">Contact</button>
+
+                </nav>
+
+            </div>
+        </div>
+
+        <!-- Menu Mobile Déroulant -->
+        <div id="mobileMenu" class="hidden md:hidden bg-[#1b4d3e] px-4 pt-2 pb-4 border-t border-[#143a2e]">
+            <div class="mb-3">
+                <input type="text" id="mobileSearchInput" placeholder="Rechercher..." class="w-full px-4 py-2 bg-[#143a2e] border border-emerald-700 rounded-lg text-sm text-white placeholder-emerald-300 focus:outline-none">
+            </div>
+            <button onclick="switchView('accueil'); toggleMobileMenu()" class="block w-full text-left py-2 text-emerald-200 hover:text-white">Accueil</button>
+            <button onclick="switchView('domaines_index'); toggleMobileMenu()" class="block w-full text-left py-2 text-emerald-200 hover:text-white">Domaines d'intervention</button>
+            <button onclick="switchView('contact'); toggleMobileMenu()" class="block w-full text-left py-2 text-emerald-200 hover:text-white">Contact</button>
+            
+        </div>
+    </header>
+
+    <!-- Conteneur Principal (Sidebar Gauche + Zone de Contenu Droite) -->
+    <div class="flex-1 flex flex-col md:flex-row max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 gap-6">
+        
+        <!-- Panneau Latéral Gauche (Sidebar) -->
+        <aside class="w-full md:w-80 bg-[#1b4d3e] text-white rounded-2xl shadow-xl flex flex-col overflow-hidden border border-[#143a2e] shrink-0">
+            <div class="p-4 bg-[#143a2e] border-b border-emerald-800/60 flex items-center justify-between">
+                <h2 class="text-base font-bold text-emerald-100 flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group text-emerald-400"></i> Nos domaines d'intervention
+                </h2>
+                <span class="bg-emerald-900 text-emerald-200 text-xs px-2 py-1 rounded-full font-semibold border border-emerald-700">11</span>
+            </div>
+            
+            <!-- Liste des Domaines dans le panel -->
+            <div id="domainsList" class="p-3 space-y-2 overflow-y-auto max-h-[calc(100vh-280px)] custom-scrollbar">
+                <button onclick="selectDomain('agriculture')" class="domain-btn w-full text-left px-4 py-3 rounded-xl transition-all duration-300 flex items-center gap-3 bg-[#143a2e]/40 hover:bg-[#143a2e] hover:translate-x-1 border border-transparent hover:border-emerald-600 group">
+                    <span class="text-2xl group-hover:scale-125 transition-transform">🌾</span>
+                    <span class="font-medium text-sm text-emerald-100">Agriculture et élevage</span>
+                </button>
+                <button onclick="selectDomain('elevage')" class="domain-btn w-full text-left px-4 py-3 rounded-xl transition-all duration-300 flex items-center gap-3 bg-[#143a2e]/40 hover:bg-[#143a2e] hover:translate-x-1 border border-transparent hover:border-emerald-600 group">
+                    <span class="text-2xl group-hover:scale-125 transition-transform">🐄</span>
+                    <span class="font-medium text-sm text-emerald-100">Élevage</span>
+                </button>
+                <button onclick="selectDomain('eau')" class="domain-btn w-full text-left px-4 py-3 rounded-xl transition-all duration-300 flex items-center gap-3 bg-[#143a2e]/40 hover:bg-[#143a2e] hover:translate-x-1 border border-transparent hover:border-emerald-600 group">
+                    <span class="text-2xl group-hover:scale-125 transition-transform">💧</span>
+                    <span class="font-medium text-sm text-emerald-100">Eau et énergie</span>
+                </button>
+                <button onclick="selectDomain('industrie')" class="domain-btn w-full text-left px-4 py-3 rounded-xl transition-all duration-300 flex items-center gap-3 bg-[#143a2e]/40 hover:bg-[#143a2e] hover:translate-x-1 border border-transparent hover:border-emerald-600 group">
+                    <span class="text-2xl group-hover:scale-125 transition-transform">🏭</span>
+                    <span class="font-medium text-sm text-emerald-100">Industrie et commerce</span>
+                </button>
+                <button onclick="selectDomain('infrastructure')" class="domain-btn w-full text-left px-4 py-3 rounded-xl transition-all duration-300 flex items-center gap-3 bg-[#143a2e]/40 hover:bg-[#143a2e] hover:translate-x-1 border border-transparent hover:border-emerald-600 group">
+                    <span class="text-2xl group-hover:scale-125 transition-transform">🏗️</span>
+                    <span class="font-medium text-sm text-emerald-100">Infrastructure</span>
+                </button>
+                <button onclick="selectDomain('transport')" class="domain-btn w-full text-left px-4 py-3 rounded-xl transition-all duration-300 flex items-center gap-3 bg-[#143a2e]/40 hover:bg-[#143a2e] hover:translate-x-1 border border-transparent hover:border-emerald-600 group">
+                    <span class="text-2xl group-hover:scale-125 transition-transform">🚚</span>
+                    <span class="font-medium text-sm text-emerald-100">Transport</span>
+                </button>
+                <button onclick="selectDomain('formation')" class="domain-btn w-full text-left px-4 py-3 rounded-xl transition-all duration-300 flex items-center gap-3 bg-[#143a2e]/40 hover:bg-[#143a2e] hover:translate-x-1 border border-transparent hover:border-emerald-600 group">
+                    <span class="text-2xl group-hover:scale-125 transition-transform">🎓</span>
+                    <span class="font-medium text-sm text-emerald-100">Formation</span>
+                </button>
+                <button onclick="selectDomain('sante')" class="domain-btn w-full text-left px-4 py-3 rounded-xl transition-all duration-300 flex items-center gap-3 bg-[#143a2e]/40 hover:bg-[#143a2e] hover:translate-x-1 border border-transparent hover:border-emerald-600 group">
+                    <span class="text-2xl group-hover:scale-125 transition-transform">🏥</span>
+                    <span class="font-medium text-sm text-emerald-100">Santé</span>
+                </button>
+                <button onclick="selectDomain('environnement')" class="domain-btn w-full text-left px-4 py-3 rounded-xl transition-all duration-300 flex items-center gap-3 bg-[#143a2e]/40 hover:bg-[#143a2e] hover:translate-x-1 border border-transparent hover:border-emerald-600 group">
+                    <span class="text-2xl group-hover:scale-125 transition-transform">🌱</span>
+                    <span class="font-medium text-sm text-emerald-100">Environnement</span>
+                </button>
+                <button onclick="selectDomain('economie')" class="domain-btn w-full text-left px-4 py-3 rounded-xl transition-all duration-300 flex items-center gap-3 bg-[#143a2e]/40 hover:bg-[#143a2e] hover:translate-x-1 border border-transparent hover:border-emerald-600 group">
+                    <span class="text-2xl group-hover:scale-125 transition-transform">📈</span>
+                    <span class="font-medium text-sm text-emerald-100">Économie sociale</span>
+                </button>
+                <button onclick="selectDomain('commerce_int')" class="domain-btn w-full text-left px-4 py-3 rounded-xl transition-all duration-300 flex items-center gap-3 bg-[#143a2e]/40 hover:bg-[#143a2e] hover:translate-x-1 border border-transparent hover:border-emerald-600 group">
+                    <span class="text-2xl group-hover:scale-125 transition-transform">🌍</span>
+                    <span class="font-medium text-sm text-emerald-100">Commerce international</span>
+                </button>
+            </div>
+            
+            <!-- Lien rapide vers les contacts enregistrés dans le sidebar -->
+            <div class="p-3 bg-[#143a2e] border-t border-emerald-800/60">
+                <button onclick="switchView('contacts_enregistres')" class="w-full py-2.5 px-3 bg-emerald-900 hover:bg-emerald-800 text-emerald-100 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-colors border border-emerald-700">
+                    <i class="fa-solid fa-address-book"></i> Voir contacts enregistrés
+                </button>
+            </div>
+        </aside>
+
+        <!-- Zone d'Affichage Principale (SPA Stage) -->
+        <main class="flex-1 bg-white rounded-2xl shadow-xl border border-slate-200 p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden">
+            <img src="agriculture.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" />
+            <div id="mainDisplay" class="w-full">
+                <!-- Vue ACCUEIL -->
+                <div id="view-accueil" class="view-container animate-fade-in space-y-8">
+                    <div class="text-center py-6">
+                        <div class="w-20 h-20 bg-emerald-50 text-[#1b4d3e] rounded-full flex items-center justify-center mx-auto mb-4 text-3xl shadow-inner border border-emerald-100">
+                            <i class="fa-solid fa-seedling"></i>
+                        </div>
+                        <h1 class="text-3xl font-bold text-slate-900 mb-2">Bienvenue sur le Portail Bonne Semence</h1>
+                        <p class="text-slate-500 text-sm" id="durable">Développement durable et initiatives communautaires</p>
+                    </div>
+
+                    <!-- Bloc de la Vision (Justifié et Encerclé / Encadré avec élégance) -->
+                    <div class="max-w-2xl mx-auto p-8 bg-emerald-50/70 border-2 border-[#1b4d3e]/40 rounded-3xl shadow-lg relative overflow-hidden">
+                        <div class="absolute -right-6 -bottom-6 text-[#1b4d3e]/10 text-9xl pointer-events-none">
+                            <i class="fa-solid fa-quote-right"></i>
+                        </div>
+                        <h3 id="durable" class="text-xs font-bold uppercase tracking-widest text-[#1b4d3e] mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-compass"></i> Notre Vision Fondamentale
+                        </h3>
+                        <p id="durable" class="text-slate-700 text-base sm:text-lg leading-relaxed text-justify font-medium relative z-10">
+                            "Porté par la vision de Tshibola Kapita Moïse, le projet La Bonne Semence a vu le jour avec l'ambition profonde de stimuler le développement durable des communautés de Kamuesha et d'étendre son impact bien au-delà de cette région."
+                        </p>
+                        <div class="mt-6 pt-4 border-t border-emerald-200/60 flex items-center justify-between text-xs text-[#1b4d3e] font-semibold">
+                            <span>Tshibola Kapita Moïse</span>
+                            <span>Initiateur du Projet</span>
+                        </div>
+                    </div>
+
+                    <div class="text-center pt-4">
+                        <button onclick="window.location.href='table.html'" class="px-6 py-3 bg-[#1b4d3e] hover:bg-[#143a2e] text-white font-medium rounded-xl shadow-lg transition-all text-sm inline-flex items-center gap-2">
+                            <span>Explorer nos domaines d'intervention</span> <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Vue INDEX DES DOMAINES -->
+                <div id="view-domaines_index" class="view-container hidden animate-fade-in space-y-6">
+                    <div class="border-b border-slate-100 pb-4">
+                        <h2 class="text-2xl font-bold text-slate-900">Domaines d'Intervention Stratégiques</h2>
+                        <p class="text-sm text-slate-500">Sélectionnez un domaine dans le menu de gauche ou ci-dessous pour afficher l'information avec son image et son message personnalisé.</p>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div onclick="selectDomain('agriculture')" class="p-5 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 cursor-pointer transition-all flex items-center gap-4 group">
+                            <span class="text-3xl group-hover:scale-125 transition-transform">🌾</span>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-base">Agriculture et élevage</h4>
+                                <p class="text-xs text-slate-500">Subventions d'intrants et appui aux fermes</p>
+                            </div>
+                        </div>
+                        <div onclick="selectDomain('eau')" class="p-5 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 cursor-pointer transition-all flex items-center gap-4 group">
+                            <span class="text-3xl group-hover:scale-125 transition-transform">💧</span>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-base">Eau et énergie</h4>
+                                <p class="text-xs text-slate-500">Forages et énergie solaire</p>
+                            </div>
+                        </div>
+                        <div onclick="selectDomain('infrastructure')" class="p-5 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 cursor-pointer transition-all flex items-center gap-4 group">
+                            <span class="text-3xl group-hover:scale-125 transition-transform">🏗️</span>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-base">Infrastructure</h4>
+                                <p class="text-xs text-slate-500">Routes, bâtiments et ouvrages</p>
+                            </div>
+                        </div>
+                        <div onclick="selectDomain('formation')" class="p-5 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 cursor-pointer transition-all flex items-center gap-4 group">
+                            <span class="text-3xl group-hover:scale-125 transition-transform">🎓</span>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-base">Formation</h4>
+                                <p class="text-xs text-slate-500">Renforcement des capacités</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vue CONTACT (Formulaire d'enregistrement) -->
+                <div id="view-contact" id="durable" class="view-container hidden animate-fade-in space-y-6">
+                    <div class="border-b border-slate-100 pb-4">
+                        <h2 class="text-2xl font-bold text-slate-900">Formulaire de Contact</h2>
+                        <p class="text-sm text-slate-500">Enregistrez vos coordonnées et votre message. Ils seront stockés et consultables dans l'onglet "Contacts enregistrés".</p>
+                    </div>
+                    <form onsubmit="handleContactSubmission(event)" class="space-y-4 max-w-xl">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Nom complet *</label>
+                            <input type="text" id="contactNom" required placeholder="Ex: Çarrive Lumpungu" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#1b4d3e]">
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Adresse Email *</label>
+                                <input type="email" id="contactEmail" required placeholder="lumpungucarrive@gmail.com" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#1b4d3e]">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Téléphone</label>
+                                <input type="tel" id="contactPhone" placeholder="+243 ..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#1b4d3e]">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Votre Message *</label>
+                            <textarea id="contactMessage" rows="4" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#1b4d3e]" placeholder="Exprimez votre requête ou votre partenariat..."></textarea>
+                        </div>
+                        <button type="submit" class="px-6 py-3 bg-[#1b4d3e] hover:bg-[#143a2e] text-white font-medium rounded-xl shadow transition-all text-sm inline-flex items-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Enregistrer le contact
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Vue CONTACTS ENREGISTRES -->
+                <div id="view-contacts_enregistres" class="view-container hidden animate-fade-in space-y-6">
+                    <div class="border-b border-slate-100 pb-4 flex items-center justify-between">
+                        <div>
+                            <h2 class="text-2xl font-bold text-slate-900">Contacts Enregistrés</h2>
+                            <p class="text-sm text-slate-500">Liste de toutes les personnes ayant soumis le formulaire de contact.</p>
+                        </div>
+                        <button onclick="clearStoredContacts()" class="text-xs text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 px-3 py-2 rounded-lg border border-red-200 transition-colors">
+                            <i class="fa-solid fa-trash"></i> Vider la liste
+                        </button>
+                    </div>
+                    <div id="contactsTableContainer" class="overflow-x-auto">
+                        <!-- Rempli dynamiquement par JS -->
+                    </div>
+                </div>
+
+                <!-- Vue INFORMATION SECTION (IMAGE + MESSAGE ÉDITABLE) -->
+                <div id="view-domain-detail" class="view-container hidden animate-fade-in space-y-6">
+                    <!-- Le contenu sera injecté dynamiquement -->
+                </div>
+            </div>
+
+            <!-- Modal de Notification (Sans utiliser alert) -->
+            <div id="customModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+                <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100">
+                    <div class="w-12 h-12 bg-emerald-100 text-[#1b4d3e] rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <h3 id="modalTitle" class="text-xl font-bold text-center text-slate-900 mb-2">Succès !</h3>
+                    <p id="modalMessage" class="text-slate-600 text-center text-sm mb-6">Opération effectuée avec succès.</p>
+                    <button onclick="closeModal()" class="w-full py-3 bg-[#1b4d3e] hover:bg-[#143a2e] text-white font-medium rounded-xl transition-colors text-sm">
+                        Compris
+                    </button>
+                </div>
+            </div>
+
+            <!-- Footer de la carte -->
+            <div class="mt-8 pt-4 border-t border-slate-100 text-center text-xs text-slate-400">
+                &copy; 2026 Bonne Semence - Portail Officiel. Tous droits réservés.
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts JavaScript -->
+    <script>
+        // Données des sections/domaines avec leurs titres et images (imagebcc.jpg ou 1.jpg au-dessus)
+        const contentSections = {
+       
+        };
+
+        // Chargement ou initialisation des messages personnalisés depuis localStorage (permet à l'utilisateur d'ajouter/modifier son message)
+        function getCustomMessages() {
+            const saved = localStorage.getItem('bs_custom_messages');
+            if (saved) {
+                try { return JSON.parse(saved); } catch(e) { return {}; }
+            }
+            return {};
+        }
+
+        function saveCustomMessage(key, messageText) {
+            const customMsgs = getCustomMessages();
+            customMsgs[key] = messageText;
+            localStorage.setItem('bs_custom_messages', JSON.stringify(customMsgs));
+        }
+
+        // Basculement des vues principales (Accueil, Domaines Index, Contact, Contacts Enregistrés)
+        function switchView(viewName) {
+            document.querySelectorAll('.view-container').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('bg-[#143a2e]', 'font-semibold'));
+
+            if (viewName === 'accueil') {
+                const el = document.getElementById('view-accueil');
+                el.classList.remove('hidden');
+                document.getElementById('nav-accueil').classList.add('bg-[#143a2e]', 'font-semibold');
+            } else if (viewName === 'domaines_index') {
+                const el = document.getElementById('view-domaines_index');
+                el.classList.remove('hidden');
+                document.getElementById('nav-domaines').classList.add('bg-[#143a2e]', 'font-semibold');
+            } else if (viewName === 'contact') {
+                const el = document.getElementById('view-contact');
+                el.classList.remove('hidden');
+                document.getElementById('nav-contact').classList.add('bg-[#143a2e]', 'font-semibold');
+            } else if (viewName === 'contacts_enregistres') {
+                renderStoredContactsView();
+                const el = document.getElementById('view-contacts_enregistres');
+                el.classList.remove('hidden');
+                document.getElementById('nav-contacts-reg').classList.add('bg-[#143a2e]', 'font-semibold');
+            }
+
+            // Réinitialiser la sélection sidebar
+            document.querySelectorAll('.domain-btn').forEach(btn => {
+                btn.classList.remove('bg-[#143a2e]', 'border-emerald-500', 'shadow-lg');
+                btn.classList.add('bg-[#143a2e]/40');
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Affichage d'un domaine sélectionné : Image en haut (imagebcc.jpg ou 1.jpg) + Message en bas éditable
+        function selectDomain(domainKey) {
+            const data = contentSections[domainKey];
+            if (!data) return;
+
+            document.querySelectorAll('.view-container').forEach(el => el.classList.add('hidden'));
+            const detailView = document.getElementById('view-domain-detail');
+            detailView.classList.remove('hidden');
+
+            const customMsgs = getCustomMessages();
+            const currentMessage = customMsgs[domainKey] !== undefined ? customMsgs[domainKey] : data.defaultMessage;
+
+            detailView.innerHTML = `
+                <div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-100">
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl p-2.5 bg-emerald-50 rounded-2xl border border-emerald-100">${data.icon}</span>
+                        <div>
+                            <h2 class="text-2xl font-bold text-slate-900">${data.title}</h2>
+                            <p class="text-xs text-slate-500">Informations officielles et descriptif du domaine</p>
+                        </div>
+                    </div>
+                    <button onclick="switchView('domaines_index')" class="text-xs text-[#1b4d3e] hover:text-emerald-950 bg-emerald-50 hover:bg-emerald-100 px-3 py-2 rounded-xl transition-colors font-medium flex items-center gap-1.5 border border-emerald-200">
+                        <i class="fa-solid fa-arrow-left"></i> Retour
+                    </button>
+                </div>
+
+                <!-- Image en haut (imagebcc.jpg avec repli sur 1.jpg ou placeholder) -->
+                <div class="w-full h-64 sm:h-80 rounded-2xl overflow-hidden shadow-md mb-6 bg-slate-900 border border-slate-200 relative group">
+                    <img src="${data.image}" alt="${data.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.onerror=null; this.src='imagebcc.jpg'; this.onerror=function(){this.src='https://placehold.co/800x400/1b4d3e/ffffff?text=${encodeURIComponent(data.title)}';};">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-6">
+                        <span class="text-white text-lg font-semibold drop-shadow">${data.icon} ${data.title}</span>
+                    </div>
+                </div>
+
+                <!-- Zone du Message et possibilité de l'ajouter/modifier -->
+                <div class="space-y-4 bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-sm font-bold uppercase tracking-wider text-slate-700 flex items-center gap-2">
+                            <i class="fa-solid fa-pen-to-square text-[#1b4d3e]"></i> Message / Description de la section
+                        </h3>
+                        <span class="text-xs text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full font-medium">Modifiable en direct</span>
+                    </div>
+                    <textarea id="editMessageInput" rows="5" class="w-full p-4 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#1b4d3e] transition-all leading-relaxed">${currentMessage}</textarea>
+                    
+                    <div class="flex justify-end gap-3 pt-2">
+                        <button onclick="resetDomainMessage('${domainKey}')" class="px-4 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold rounded-xl transition-colors">
+                            Réinitialiser par défaut
+                        </button>
+                        <button onclick="saveDomainMessage('${domainKey}')" class="px-5 py-2.5 bg-[#1b4d3e] hover:bg-[#143a2e] text-white text-xs font-semibold rounded-xl shadow transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-floppy-disk"></i> Enregistrer les modifications
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Mettre en surbrillance dans le panel latéral
+            document.querySelectorAll('.domain-btn').forEach(btn => {
+                btn.classList.remove('bg-[#143a2e]', 'border-emerald-500', 'shadow-lg');
+                btn.classList.add('bg-[#143a2e]/40');
+            });
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.remove('bg-[#143a2e]/40');
+                event.currentTarget.classList.add('bg-[#143a2e]', 'border-emerald-500', 'shadow-lg');
+            }
+        }
+
+        function saveDomainMessage(key) {
+            const val = document.getElementById('editMessageInput').value;
+            saveCustomMessage(key, val);
+            showModal("Message mis à jour !", "Le message pour cette section a été modifié et sauvegardé avec succès.");
+        }
+
+        function resetDomainMessage(key) {
+            const data = contentSections[key];
+            if (data) {
+                document.getElementById('editMessageInput').value = data.defaultMessage;
+                saveCustomMessage(key, data.defaultMessage);
+                showModal("Réinitialisé", "Le message par défaut a été restauré.");
+            }
+        }
+
+        // Gestion des contacts soumis (localStorage)
+        function handleContactSubmission(e) {
+            e.preventDefault();
+            const nom = document.getElementById('contactNom').value.trim();
+            const email = document.getElementById('contactEmail').value.trim();
+            const phone = document.getElementById('contactPhone').value.trim();
+            const message = document.getElementById('contactMessage').value.trim();
+
+            if (!nom || !email || !message) return;
+
+            const newContact = {
+                id: Date.now(),
+                date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+                nom,
+                email,
+                phone: phone || 'Non renseigné',
+                message
+            };
+
+            let contacts = [];
+            const existing = localStorage.getItem('bs_submitted_contacts');
+            if (existing) {
+                try { contacts = JSON.parse(existing); } catch(err) { contacts = []; }
+            }
+
+            contacts.unshift(newContact); // Ajouter au début
+            localStorage.setItem('bs_submitted_contacts', JSON.stringify(contacts));
+
+            // Vider le formulaire
+            document.getElementById('contactNom').value = '';
+            document.getElementById('contactEmail').value = '';
+            document.getElementById('contactPhone').value = '';
+            document.getElementById('contactMessage').value = '';
+
+            showModal("Contact Enregistré !", "Vos informations ont été enregistrées avec succès. Vous pouvez les consulter dans le menu 'Contacts enregistrés'.");
+        }
+
+        function renderStoredContactsView() {
+            const container = document.getElementById('contactsTableContainer');
+            let contacts = [];
+            const existing = localStorage.getItem('bs_submitted_contacts');
+            if (existing) {
+                try { contacts = JSON.parse(existing); } catch(err) { contacts = []; }
+            }
+
+            if (contacts.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300">
+                        <div class="text-4xl text-slate-300 mb-3"><i class="fa-solid fa-address-book"></i></div>
+                        <p class="text-slate-600 font-medium text-sm">Aucun contact enregistré pour le moment.</p>
+                        <p class="text-slate-400 text-xs mt-1">Remplissez le formulaire dans l'onglet Contact pour en ajouter.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let rows = '';
+            contacts.forEach((c, index) => {
+                rows += `
+                    <tr class="hover:bg-slate-50/80 transition-colors border-b border-slate-100">
+                        <td class="px-4 py-3 text-xs text-slate-500">${c.date}</td>
+                        <td class="px-4 py-3 font-semibold text-slate-800 text-sm">${escapeHtml(c.nom)}</td>
+                        <td class="px-4 py-3 text-slate-600 text-sm">${escapeHtml(c.email)}</td>
+                        <td class="px-4 py-3 text-slate-600 text-sm">${escapeHtml(c.phone)}</td>
+                        <td class="px-4 py-3 text-slate-700 text-sm max-w-xs truncate" title="${escapeHtml(c.message)}">${escapeHtml(c.message)}</td>
+                        <td class="px-4 py-3 text-right">
+                            <button onclick="deleteContact(${c.id})" class="text-red-500 hover:text-red-700 p-1 rounded transition-colors" title="Supprimer">
+                                <i class="fa-solid fa-trash-can text-xs"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            container.innerHTML = `
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100 text-slate-700 uppercase tracking-wider text-[10px] font-bold">
+                            <th class="px-4 py-3 rounded-l-lg">Date</th>
+                            <th class="px-4 py-3">Nom</th>
+                            <th class="px-4 py-3">Email</th>
+                            <th class="px-4 py-3">Téléphone</th>
+                            <th class="px-4 py-3">Message</th>
+                            <th class="px-4 py-3 rounded-r-lg text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rows}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function deleteContact(id) {
+            let contacts = [];
+            const existing = localStorage.getItem('bs_submitted_contacts');
+            if (existing) {
+                try { contacts = JSON.parse(existing); } catch(err) { contacts = []; }
+            }
+            contacts = contacts.filter(c => c.id !== id);
+            localStorage.setItem('bs_submitted_contacts', JSON.stringify(contacts));
+            renderStoredContactsView();
+        }
+
+        function clearStoredContacts() {
+            localStorage.removeItem('bs_submitted_contacts');
+            renderStoredContactsView();
+            showModal("Liste vidée", "Tous les contacts enregistrés ont été supprimés.");
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        // Modal helpers
+        function showModal(title, message) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalMessage').textContent = message;
+            document.getElementById('customModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('customModal').classList.add('hidden');
+        }
+
+        // Menu mobile toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('hidden');
+        }
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+
+        // Recherche en temps réel dans le panel latéral
+        const searchInput = document.getElementById('searchInput');
+        const mobileSearchInput = document.getElementById('mobileSearchInput');
+
+        function filterDomains(query) {
+            const term = query.toLowerCase();
+            const buttons = document.querySelectorAll('#domainsList button');
+            buttons.forEach(btn => {
+                const text = btn.textContent.toLowerCase();
+                if (text.includes(term)) {
+                    btn.style.display = 'flex';
+                } else {
+                    btn.style.display = 'none';
+                }
+            });
+        }
+
+        if (searchInput) searchInput.addEventListener('input', (e) => filterDomains(e.target.value));
+        if (mobileSearchInput) mobileSearchInput.addEventListener('input', (e) => filterDomains(e.target.value));
+    </script>
+</body>
+</html>

@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Bonne Semence | Centre de Réveil Missionnaire de Kamuesha</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter / Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galerie Défilante Verticale</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+         @keyframes scrollVertical {
+            0% {
+                transform: translateY(0%);
+            }
+            100% {
+                transform: translateY(-50%);
+            }
+        }
+
+        .marquee-container {
+            display: flex;
+            flex-direction: column;
+            animation: scrollVertical 30s linear infinite;
+        }
+
+        .marquee-wrapper:hover .marquee-container {
+            animation-play-state: paused;
+        }
+
+
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .hero-pattern {
+            background: linear-gradient(135deg, rgba(20, 83, 45, 0.92) 0%, rgba(22, 163, 74, 0.85) 100%), url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&q=80&w=1920') center/cover no-repeat;
+        }
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Navigation Bar -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo & Brand -->
+                <a href="#accueil" onclick="switchTab('accueil')" class="flex items-center space-x-3 group">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-brand-700 to-brand-500 flex items-center justify-center text-white shadow-lg shadow-brand-500/30 group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-seedling text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="block font-bold text-lg text-slate-900 tracking-tight leading-none">La Bonne Semence</span>
+                        <span class="text-xs font-semibold text-brand-700 tracking-wider uppercase mt-1 block">CRM Kamuesha</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden lg:flex items-center space-x-6">
+                    <button onclick="window.location.href='index.html'" class="px-6 py-3 bg-[#1b4d3e] hover:bg-[#143a2e] text-white font-medium rounded-xl shadow-lg transition-all text-sm inline-flex items-center gap-2">
+                        Accueil
+                    </button>
+                    <button onclick="switchTab('historique')" class="nav-btn text-sm font-medium text-slate-700 hover:text-brand-600 transition-colors" data-target="historique">Historique</button>
+                    <button onclick="switchTab('objectifs')" class="nav-btn text-sm font-medium text-slate-700 hover:text-brand-600 transition-colors" data-target="objectifs">Objectifs</button>
+                    <button onclick="switchTab('impact')" class="nav-btn text-sm font-medium text-slate-700 hover:text-brand-600 transition-colors" data-target="impact">Impact</button>
+                    <button onclick="switchTab('partenaires')" class="nav-btn text-sm font-medium text-slate-700 hover:text-brand-600 transition-colors" data-target="partenaires">Partenaires</button>
+                    <button onclick="switchTab('blog')" class="nav-btn text-sm font-medium text-slate-700 hover:text-brand-600 transition-colors" data-target="blog">Blog</button>
+                    <button onclick="switchTab('galerie')" class="nav-btn text-sm font-medium text-slate-700 hover:text-brand-600 transition-colors" data-target="galerie">Galerie</button>
+                    <button onclick="switchTab('apropos')" class="nav-btn text-sm font-medium text-slate-700 hover:text-brand-600 transition-colors" data-target="apropos">À propos</button>
+                    <button onclick="switchTab('accueil')" class="nav-btn text-sm font-medium text-slate-700 hover:text-brand-600 transition-colors" data-target="accueil">
+                        Explorer
+                    </button>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" aria-label="Menu" class="lg:hidden p-2.5 rounded-xl text-slate-700 hover:bg-slate-100 focus:outline-none transition-colors">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Drawer -->
+        <div id="mobile-menu" class="hidden lg:hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-lg border-b border-slate-200 shadow-xl px-6 py-6 space-y-3">
+            <button onclick="switchTab('accueil'); toggleMobileMenu();" class="block w-text-left text-base font-medium text-slate-700 hover:text-brand-600 py-1">Accueil</button>
+            <button onclick="switchTab('historique'); toggleMobileMenu();" class="block w-text-left text-base font-medium text-slate-700 hover:text-brand-600 py-1">Historique</button>
+            <button onclick="switchTab('objectifs'); toggleMobileMenu();" class="block w-text-left text-base font-medium text-slate-700 hover:text-brand-600 py-1">Objectifs</button>
+            <button onclick="switchTab('impact'); toggleMobileMenu();" class="block w-text-left text-base font-medium text-slate-700 hover:text-brand-600 py-1">Impact</button>
+            <button onclick="switchTab('partenaires'); toggleMobileMenu();" class="block w-text-left text-base font-medium text-slate-700 hover:text-brand-600 py-1">Partenaires</button>
+            <button onclick="switchTab('blog'); toggleMobileMenu();" class="block w-text-left text-base font-medium text-slate-700 hover:text-brand-600 py-1">Blog</button>
+            <button onclick="switchTab('galerie'); toggleMobileMenu();" class="block w-text-left text-base font-medium text-slate-700 hover:text-brand-600 py-1">Galerie</button>
+            <button onclick="switchTab('apropos'); toggleMobileMenu();" class="block w-text-left text-base font-medium text-slate-700 hover:text-brand-600 py-1">À propos</button>
+            <div class="pt-2">
+                <button onclick="window.location.href='index.html'" class="w-full py-3 rounded-xl bg-brand-600 text-white font-semibold shadow-md shadow-brand-600/30">
+                    Explorer nos domaines
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area (Dynamic single-page application switching tabs) -->
+    <main class="pt-20">
+
+        <!-- TAB 1: ACCUEIL -->
+        <div id="tab-accueil" class="tab-content active">
+            <section class="relative pt-24 pb-28 md:pt-36 md:pb-32 hero-pattern text-white overflow-hidden">
+                <div class="absolute inset-0 bg-black/30"></div>
+                <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center md:text-left">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+                        <div class="md:col-span-8 space-y-6">
+                            <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-emerald-200 text-xs font-semibold tracking-wide uppercase">
+                                <i class="fa-solid fa-certificate"></i>
+                                <span>Arrêté ministériel N°406 / ASBL Confessionnelle</span>
+                            </div>
+                            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight">
+                                Cultiver l'espoir, <br class="hidden sm:inline">bâtir un <span class="text-emerald-300">avenir durable</span>.
+                            </h1>
+                            <p class="text-lg md:text-xl text-slate-100 font-normal max-w-2xl leading-relaxed">
+                                Centre de Réveil Missionnaire de Kamuesha & Le projet <strong class="text-white font-semibold">La Bonne Semence</strong> : œuvrer pour le développement durable des communautés de Kamuesha et d'au-delà.
+                            </p>
+                            <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 pt-4">
+                                <button onclick="window.location.href='index.html'" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-white text-brand-900 font-bold shadow-xl hover:bg-emerald-50 active:scale-95 transition-all text-center">
+                                    Explorer nos domaines d'exploration
+                                </button>
+                                <button onclick="switchTab('partenaires')" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-brand-700/60 backdrop-blur-md border border-white/20 text-white font-semibold hover:bg-brand-700/80 active:scale-95 transition-all text-center">
+                                    Devenir Partenaire
+                                </button>
+                            </div>
+                        </div>
+                        <div class="md:col-span-4 hidden md:block">
+                            <div class="relative bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 text-left shadow-2xl space-y-4">
+                                <div class="w-12 h-12 rounded-2xl bg-emerald-400/20 flex items-center justify-center text-emerald-300 text-2xl">
+                                    <i class="fa-solid fa-hands-holding-child"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-white">Impact Communautaire</h3>
+                                <p class="text-sm text-slate-200 leading-relaxed">
+                                    Amélioration durable des conditions de vie, sécurité alimentaire, autonomisation des jeunes et protection de notre environnement.
+                                </p>
+                                <div class="pt-2 border-t border-white/10 flex items-center justify-between text-xs text-emerald-200">
+                                    <span>Kamuesha, RDC</span>
+                                    <span class="font-bold">2025 - Futur</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 2: HISTORIQUE -->
+        <div id="tab-historique" class="tab-content">
+            <section class="py-16 md:py-24 bg-white">
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+                    <div class="text-center max-w-3xl mx-auto">
+                        <span class="text-brand-600 font-semibold text-sm uppercase tracking-wider block mb-2">Genèse du projet</span>
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Historique du projet</h2>
+                        <div class="w-20 h-1.5 bg-brand-500 mx-auto rounded-full mt-4"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-slate-50 border border-slate-200/80 rounded-3xl p-8 shadow-sm">
+                        <div class="md:col-span-5">
+                            <img src="kamueshi.jpg"  alt="Historique" class="w-full h-72 object-cover rounded-2xl shadow-md">
+                        </div>
+                        <div class="md:col-span-7 space-y-4 text-slate-700 leading-relaxed text-base">
+                            <p>
+                                Le projet <strong>La Bonne Semence</strong> est le fruit d'une vision ambitieuse de développement durable portée par <strong>Tshibola Kapita Moïse</strong>. En s'articulant autour de la modernisation des pratiques agricoles, de l'agropastoralisme, de l'éducation, de la santé, de la protection de l'environnement et de l'essor économique, cette initiative vise à transformer durablement le quotidien des communautés de Kamuesha et d'au-delà.
+                            </p>
+                            <p>
+                                En misant sur l'innovation, le renforcement des compétences agricoles et la formation des jeunes, le projet s'attaque aux racines des défis locaux pour bâtir un avenir d'autosuffisance et de prospérité partagée. C'est un véritable appel à co-créer un monde où les communautés locales et urbaines prospèrent dans la paix, l'harmonie et la dignité, grâce à l'engagement collectif et au soutien des partenaires techniques, financiers et sociaux.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Timelines / Dates clés -->
+                    <div class="space-y-6 pt-6">
+                        <h3 class="text-2xl font-bold text-slate-900 text-center mb-8">Dates Clés de notre Parcours</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-emerald-50/70 border border-emerald-100 rounded-2xl p-6 space-y-3">
+                                <div class="text-brand-700 font-extrabold text-xl">2021</div>
+                                <div class="font-semibold text-slate-900">Début des activités dans les secteurs :</div>
+                                <ul class="list-disc list-inside text-sm text-slate-600 space-y-1">
+                                    <li>Foresterie</li>
+                                    <li>Alimentation en eau potable</li>
+                                    <li>Élevage</li>
+                                    <li>Bâtiment et travaux publics</li>
+                                </ul>
+                            </div>
+                            <div class="bg-emerald-50/70 border border-emerald-100 rounded-2xl p-6 space-y-3">
+                                <div class="text-brand-700 font-extrabold text-xl">02 août 2025</div>
+                                <p class="text-sm text-slate-700 leading-relaxed">
+                                    Début des recherches et élaboration du projet <strong>LA BONNE SEMENCE</strong> à Kamuesha. Participation de : <strong>Pedro Medo Alfredo</strong> et <strong>Tusamba Komba Dieuleveut</strong>.
+                                </p>
+                            </div>
+                            <div class="bg-emerald-50/70 border border-emerald-100 rounded-2xl p-6 space-y-3">
+                                <div class="text-brand-700 font-extrabold text-xl">29 janvier 2026</div>
+                                <p class="text-sm text-slate-700 leading-relaxed">
+                                    Finalisation officielle du document du projet à Kinshasa.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 3: OBJECTIFS -->
+        <div id="tab-objectifs" class="tab-content">
+            <section class="py-16 md:py-24 bg-white">
+                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+                    <div class="text-center max-w-3xl mx-auto">
+                        <span class="text-brand-600 font-semibold text-sm uppercase tracking-wider block mb-2">Notre Cadre d'Action</span>
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Objectifs & Domaines</h2>
+                        <div class="w-20 h-1.5 bg-brand-500 mx-auto rounded-full mt-4"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-slate-50 border border-slate-200/80 rounded-3xl p-8 shadow-sm">
+                        <div class="md:col-span-5">
+                            <img src="objectif.jpeg"  alt="Objectifs" class="w-full h-72 object-cover rounded-2xl shadow-md">
+                        </div>
+                        <div class="md:col-span-7 space-y-4 text-slate-700 leading-relaxed text-base">
+                            <p>
+                                Le <strong>Centre de Réveil Missionnaire de Kamuesha</strong> s'affirme comme une association sans but lucratif confessionnelle profondément ancrée dans les réalités et les aspirations de sa communauté. Portant des valeurs de foi, de solidarité et d'engagement humanitaire, cette structure œuvre aux côtés des populations pour inspirer les consciences et impulser un changement positif.
+                            </p>
+                            <p>
+                                En unissant la dimension spirituelle et l'action sociale concrète, elle offre un cadre d'écoute, d'entraide et de mobilisation, devenant ainsi un repère incontournable pour tisser des liens forts, cultiver la paix et porter des projets de développement porteurs d'espoir pour Kamuesha et d'au-delà.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 12 Domaines -->
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-900 mb-6 text-center">Les Domaines d'Intervention</h3>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                            <div class="bg-emerald-50/60 border border-emerald-100 p-4 rounded-2xl text-center shadow-sm flex flex-col items-center justify-center space-y-2 card-hover">
+                                <span class="text-3xl">🌾</span>
+                                <span class="font-semibold text-slate-800 text-sm">Agro-pastorale</span>
+                            </div>
+                            <div class="bg-cyan-50/60 border border-cyan-100 p-4 rounded-2xl text-center shadow-sm flex flex-col items-center justify-center space-y-2 card-hover">
+                                <span class="text-3xl">💧</span>
+                                <span class="font-semibold text-slate-800 text-sm">Eau potable</span>
+                            </div>
+                            <div class="bg-amber-50/60 border border-amber-100 p-4 rounded-2xl text-center shadow-sm flex flex-col items-center justify-center space-y-2 card-hover">
+                                <span class="text-3xl">⚡</span>
+                                <span class="font-semibold text-slate-800 text-sm">Hydroélectricité</span>
+                            </div>
+                            <div class="bg-indigo-50/60 border border-indigo-100 p-4 rounded-2xl text-center shadow-sm flex flex-col items-center justify-center space-y-2 card-hover">
+                                <span class="text-3xl">🏭</span>
+                                <span class="font-semibold text-slate-800 text-sm">Manufacture</span>
+                            </div>
+                            <div class="bg-green-50/60 border border-green-100 p-4 rounded-2xl text-center shadow-sm flex flex-col items-center justify-center space-y-2 card-hover">
+                                <span class="text-3xl">🌳</span>
+                                <span class="font-semibold text-slate-800 text-sm">Foresterie</span>
+                            </div>
+                            <div class="bg-orange-50/60 border border-orange-100 p-4 rounded-2xl text-center shadow-sm flex flex-col items-center justify-center space-y-2 card-hover">
+                                <span class="text-3xl">🏗️</span>
+                                <span class="font-semibold text-slate-800 text-sm">BTP</span>
+                            </div>
+                            <div class="bg-purple-50/60 border border-purple-100 p-4 rounded-2xl text-center shadow-sm flex flex-col items-center justify-center space-y-2 card-hover">
+                                <span class="text-3xl">🎓</span>
+                                <span class="font-semibold text-slate-800 text-sm">Formation professionnelle</span>
+                            </div>
+                            <div class="bg-rose-50/60 border border-rose-100 p-4 rounded-2xl text-center shadow-sm flex flex-col items-center justify-center space-y-2 card-hover">
+                                <span class="text-3xl">🤝</span>
+                                <span class="font-semibold text-slate-800 text-sm">Encadrement et aide</span>
+                            </div>
+                            <div class="bg-teal-50/60 border border-teal-100 p-4 rounded-2xl text-center shadow-sm flex flex-col items-center justify-center space-y-2 card-hover">
+                                <span class="text-3xl">🏥</span>
+                                <span class="font-semibold text-slate-800 text-sm">Santé</span>
+                            </div>
+                            <div class="bg-blue-50/60 border border-blue-100 p-4 rounded-2xl text-center shadow-sm flex flex-col items-center justify-center space-y-2 card-hover">
+                                <span class="text-3xl">📚</span>
+                                <span class="font-semibold text-slate-800 text-sm">Éducation</span>
+                            </div>
+                            <div class="bg-emerald-50/60 border border-emerald-100 p-4 rounded-2xl text-center shadow-sm flex flex-col items-center justify-center space-y-2 card-hover">
+                                <span class="text-3xl">🌱</span>
+                                <span class="font-semibold text-slate-800 text-sm">Environnement</span>
+                            </div>
+                            <div class="bg-yellow-50/60 border border-yellow-100 p-4 rounded-2xl text-center shadow-sm flex flex-col items-center justify-center space-y-2 card-hover">
+                                <span class="text-3xl">📈</span>
+                                <span class="font-semibold text-slate-800 text-sm">Économie sociale</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 4: IMPACT -->
+        <div id="tab-impact" class="tab-content">
+            <section class="py-16 md:py-24 bg-white">
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+                    <div class="text-center max-w-3xl mx-auto">
+                        <span class="text-brand-600 font-semibold text-sm uppercase tracking-wider block mb-2">Résultats & Changements</span>
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Impact du Projet</h2>
+                        <div class="w-20 h-1.5 bg-brand-500 mx-auto rounded-full mt-4"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-slate-50 border border-slate-200/80 rounded-3xl p-8 shadow-sm">
+                        <div class="md:col-span-5">
+                            <img src="eau.jpeg"  alt="Impact" class="w-full h-80 object-cover rounded-2xl shadow-md">
+                        </div>
+                        <div class="md:col-span-7 space-y-6 text-slate-700 leading-relaxed text-base">
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-lg mb-1">Amélioration durable des conditions de vie</h4>
+                                <p class="text-sm">L'amélioration durable des conditions de vie constitue l'aboutissement ultime de toutes ces actions menées au sein des communautés. Il ne s'agit pas seulement de répondre à des besoins immédiats, mais de bâtir des fondations solides pour que chaque famille puisse accéder à une stabilité pérenne.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-lg mb-1">Création d'emplois et Opportunités économiques</h4>
+                                <p class="text-sm">La création d'emplois et l'offre d'opportunités économiques pour les communautés viennent couronner cette vision de transformation et d'autosuffisance à Kamuesha.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-emerald-50/60 border border-emerald-100 p-6 rounded-3xl space-y-3">
+                            <div class="w-12 h-12 rounded-xl bg-brand-600 text-white flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-droplet"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-lg">Accès à l'eau potable</h4>
+                            <p class="text-sm text-slate-700 leading-relaxed">
+                                L'accès à l'eau potable et le développement des infrastructures hydrauliques représentent un impératif vital pour la santé, la dignité et le développement des communautés de Kamuesha et d'au-delà.
+                            </p>
+                        </div>
+                        <div class="bg-emerald-50/60 border border-emerald-100 p-6 rounded-3xl space-y-3">
+                            <div class="w-12 h-12 rounded-xl bg-brand-600 text-white flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-tree"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-lg">Protection de l'environnement</h4>
+                            <p class="text-sm text-slate-700 leading-relaxed">
+                                La protection de l'environnement et la gestion durable des ressources naturelles viennent ancrer toutes ces actions dans une démarche de responsabilité et de pérennité face aux défis écologiques actuels.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 5: PARTENAIRES -->
+        <div id="tab-partenaires" class="tab-content">
+            <section class="py-16 md:py-24 bg-white">
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+                    <div class="text-center max-w-3xl mx-auto">
+                        <span class="text-brand-600 font-semibold text-sm uppercase tracking-wider block mb-2">Collaboration & Reconnaissance</span>
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Partenaires & Cadre Légal</h2>
+                        <div class="w-20 h-1.5 bg-brand-500 mx-auto rounded-full mt-4"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-slate-50 border border-slate-200/80 rounded-3xl p-8 shadow-sm">
+                        <div class="md:col-span-5">
+                            <img src="partenaire.jpeg"  alt="Partenaires" class="w-full h-80 object-cover rounded-2xl shadow-md">
+                        </div>
+                        <div class="md:col-span-7 space-y-4 text-slate-700 leading-relaxed text-base">
+                            <p>
+                                Nous lançons un appel vibrant aux partenaires financiers, techniques et sociaux afin d’unir nos forces et participer activement à la matérialisation de ce projet porteur d'avenir. Parce qu'aucun grand changement ne se fait seul, chaque contribution constitue une pierre angulaire pour bâtir un développement durable et inclusif.
+                            </p>
+                            <div class="p-4 rounded-2xl bg-brand-900 text-white space-y-2">
+                                <div class="text-xs text-emerald-300 font-semibold uppercase">Identification Légale Officielle</div>
+                                <p class="text-sm">
+                                    Le Centre de Réveil Missionnaire de Kamuesha, Association sans but lucratif confessionnelle, est officiellement doté de la personnalité juridique par l'<strong>Arrêté ministériel N°406/CAB/ME/MIN/J&GS/2025</strong> du 31 mars 2025.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pourquoi nous rejoindre & Types de partenaires -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-slate-50 border border-slate-200 rounded-3xl p-8 space-y-4">
+                            <h3 class="text-xl font-bold text-slate-900">Pourquoi nous rejoindre ?</h3>
+                            <ul class="space-y-3 text-sm text-slate-700">
+                                <li class="flex items-start space-x-3">
+                                    <span class="text-brand-600 font-bold">🤝</span>
+                                    <span><strong>Impact social :</strong> Améliorer durablement la vie des populations.</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <span class="text-brand-600 font-bold">🌍</span>
+                                    <span><strong>Développement durable :</strong> Investir dans un avenir responsable.</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <span class="text-brand-600 font-bold">📊</span>
+                                    <span><strong>Transparence :</strong> Gestion participative et responsable.</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <span class="text-brand-600 font-bold">🏛️</span>
+                                    <span><strong>Gouvernance inclusive :</strong> Collaboration avec toutes les parties prenantes.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 rounded-3xl p-8 space-y-4">
+                            <h3 class="text-xl font-bold text-slate-900">Types de partenaires recherchés</h3>
+                            <div class="grid grid-cols-2 gap-3 pt-2">
+                                <div class="p-3 bg-white border border-slate-200 rounded-xl text-center font-medium text-sm text-slate-800 shadow-xs">💰 Financiers</div>
+                                <div class="p-3 bg-white border border-slate-200 rounded-xl text-center font-medium text-sm text-slate-800 shadow-xs">🛠️ Techniques</div>
+                                <div class="p-3 bg-white border border-slate-200 rounded-xl text-center font-medium text-sm text-slate-800 shadow-xs">🏛️ Institutionnels</div>
+                                <div class="p-3 bg-white border border-slate-200 rounded-xl text-center font-medium text-sm text-slate-800 shadow-xs">🎓 Universitaires</div>
+                                <div class="p-3 bg-white border border-slate-200 rounded-xl text-center font-medium text-sm text-slate-800 shadow-xs col-span-2">🌍 ONG & Organisations internationales</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 6: BLOG -->
+        <div id="tab-blog" class="tab-content">
+            <section class="py-16 md:py-24 bg-white">
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+                    <div class="text-center max-w-3xl mx-auto">
+                        <span class="text-brand-600 font-semibold text-sm uppercase tracking-wider block mb-2">Actualités & Réflexions</span>
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Articles du Blog</h2>
+                        <div class="w-20 h-1.5 bg-brand-500 mx-auto rounded-full mt-4"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-slate-50 border border-slate-200/80 rounded-3xl p-8 shadow-sm">
+                        <div class="md:col-span-5">
+                            <img src="blog.jpg"  alt="Blog" class="w-full h-80 object-cover rounded-2xl shadow-md">
+                        </div>
+                        <div class="md:col-span-7 space-y-4 text-slate-700 leading-relaxed text-sm">
+                            <h3 class="font-bold text-slate-900 text-lg">Les nouvelles techniques agricoles au service des communautés</h3>
+                            <p>
+                                Au cœur des défis du développement rural, l'adoption de nouvelles techniques agricoles représente un levier d'émancipation et de prospérité incontournable pour les communautés locales. En introduisant des méthodes modernes, durables et adaptées aux réalités du terrain — telles que l'agroécologie, la gestion optimisée des ressources en eau et l'amélioration des semences —, il devient possible de transformer radicalement le quotidien des agriculteurs.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-slate-50 border border-slate-200/80 rounded-3xl p-6 space-y-3">
+                            <h4 class="font-bold text-slate-900 text-lg">Formation des jeunes</h4>
+                            <p class="text-sm text-slate-700 leading-relaxed">
+                                Au-delà de la modernisation des pratiques des terres, la formation des jeunes constitue le pilier fondamental pour pérenniser le développement et l'avenir des communautés. Offrir à la jeunesse rurale et urbaine des opportunités d'apprentissage adaptées, c'est lui donner les moyens de devenir actrice de son propre destin.
+                            </p>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200/80 rounded-3xl p-6 space-y-3">
+                            <h4 class="font-bold text-slate-900 text-lg">Renforcement des compétences agricoles</h4>
+                            <p class="text-sm text-slate-700 leading-relaxed">
+                                Le renforcement des compétences agricoles vient parachever cette dynamique de transformation en transformant le savoir théorique en une véritable maîtrise de terrain, garantissant l'autonomie et la prospérité des producteurs de Kamuesha.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 7: GALERIE -->
+        <div id="tab-galerie" class="tab-content">
+            <section class="py-16 md:py-24 bg-white">
+                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+                    <div class="text-center max-w-3xl mx-auto">
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">La Galerie</h2>
+                        <div class="w-20 h-1.5 bg-brand-500 mx-auto rounded-full mt-4"></div>
+                    </div>
+
+<center>
+        
+        <!-- Fenêtre de visualisation agrandie -->
+        <div class="h-[600px] overflow-hidden relative marquee-wrapper">
+            <div class="marquee-container gap-8 pb-8">
+                
+                <!-- Série 1 (Images agrandies) -->
+                <div class="group relative bg-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-slate-700/60 transition-all duration-300 hover:scale-[1.01] hover:border-purple-500/50">
+                    <div class="aspect-[16/9] w-full overflow-hidden bg-slate-900">
+                        <img src="AUBERGINE.jpg"  alt="Photo BB" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-6 flex justify-between items-end">
+                        <div>
+                            <span class="text-xs font-semibold text-purple-400 uppercase tracking-wider">AUBERGINE</span>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group relative bg-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-slate-700/60 transition-all duration-300 hover:scale-[1.01] hover:border-purple-500/50">
+                    <div class="aspect-[16/9] w-full overflow-hidden bg-slate-900">
+                        <img src="images/bonnesemence.jpg" alt="Photo VV" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-6 flex justify-between items-end">
+                        <div>
+                            <span class="text-xs font-semibold text-purple-400 uppercase tracking-wider">La semence</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group relative bg-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-slate-700/60 transition-all duration-300 hover:scale-[1.01] hover:border-purple-500/50">
+                    <div class="aspect-[16/9] w-full overflow-hidden bg-slate-900">
+                        <img src="images/CHAMBRE.jpg"  alt="Photo NN" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-6 flex justify-between items-end">
+                        <div>
+                            <span class="text-xs font-semibold text-purple-400 uppercase tracking-wider">CHAMBRE</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group relative bg-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-slate-700/60 transition-all duration-300 hover:scale-[1.01] hover:border-purple-500/50">
+                    <div class="aspect-[16/9] w-full overflow-hidden bg-slate-900">
+                        <img src="images/PIMENT.jpg"  alt="Photo MM" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-6 flex justify-between items-end">
+                        <div>
+                            <span class="text-xs font-semibold text-purple-400 uppercase tracking-wider">Piment</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group relative bg-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-slate-700/60 transition-all duration-300 hover:scale-[1.01] hover:border-purple-500/50">
+                    <div class="aspect-[16/9] w-full overflow-hidden bg-slate-900">
+                        <img src="images/RIVIERE.jpg"  alt="Photo XX" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-6 flex justify-between items-end">
+                        <div>
+                            <span class="text-xs font-semibold text-purple-400 uppercase tracking-wider">RIVIERE</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group relative bg-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-slate-700/60 transition-all duration-300 hover:scale-[1.01] hover:border-purple-500/50">
+                    <div class="aspect-[16/9] w-full overflow-hidden bg-slate-900">
+                        <img src="images/VACHE.jpg"  alt="Photo BB" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-6 flex justify-between items-end">
+                        <div>
+                            <span class="text-xs font-semibold text-purple-400 uppercase tracking-wider">VACHE</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</center>
+        <!-- TAB 8: A PROPOS -->
+        <div id="tab-apropos" class="tab-content">
+            <section class="relative py-24 md:py-32 text-white overflow-hidden" style="background: linear-gradient(135deg, rgba(20, 83, 45, 0.95) 0%, rgba(15, 23, 42, 0.9) 100%), url('Image/page.jpg') center/cover no-repeat;">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8 relative z-10">
+                    <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-emerald-200 text-xs font-semibold uppercase">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>À Propos de nous</span>
+                    </div>
+                    
+                    <p class="text-xl md:text-2xl font-light text-slate-100 leading-relaxed">
+                        Le projet <strong>La Bonne Semence</strong> est né de la volonté de <strong>Tshibola Kapita Moïse</strong> de contribuer au développement durable des communautés de Kamuesha et d'ailleurs.
+                    </p>
+
+                    <div class="p-8 rounded-3xl bg-white/10 backdrop-blur-xl border border-white/20 space-y-6 text-left shadow-2xl">
+                        <blockquote class="text-lg md:text-xl font-medium text-emerald-200 italic text-center">
+                            « Bâtir un monde où les communautés locales et urbaines prospèrent dans la paix et l'harmonie, grâce à un développement durable et équitable. »
+                        </blockquote>
+                        <hr class="border-white/20">
+                        <blockquote class="text-base md:text-lg font-normal text-slate-100 text-center">
+                            « Contribuer au développement durable des communautés de Kamuesha et d'au-delà en promouvant l'agropastoralisme, l'éducation, la santé, la protection de l'environnement et l'essor économique. »
+                        </blockquote>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+            <div>
+                <p class="text-white font-bold text-base">Centre de Réveil Missionnaire de Kamuesha (ASBL)</p>
+                <p class="text-xs text-slate-500 mt-1">Arrêté ministériel N°406/CAB/ME/MIN/J&GS/2025 du 31 mars 2025</p>
+            </div>
+            <p class="text-xs text-slate-500">
+                &copy; 2025-2026 La Bonne Semence. Tous droits réservés.
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Tab Switching & Mobile Menu -->
+    <script>
+        function switchTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show selected tab
+            const targetTab = document.getElementById('tab-' + tabName);
+            if (targetTab) {
+                targetTab.classList.add('active');
+            }
+
+            // Scroll to top smoothly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+
+        // Navbar shadow effect on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-md');
+            } else {
+                header.classList.remove('shadow-md');
+            }
+        });
+    </script>
+</body>
+</html>
